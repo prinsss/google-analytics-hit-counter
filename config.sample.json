@@ -1,0 +1,15 @@
+{
+  "listenPort": 8000,
+  "maxQueryAmount": 10,
+  "apiCacheTtl": 3600,
+  "authorization": {
+    "projectId": "<REPLACE_WITH_PROJECT_ID>",
+    "privateKey": "-----BEGIN PRIVATE KEY-----\n(...)",
+    "clientEmail": "quickstart@PROJECT-ID.iam.gserviceaccount.com"
+  },
+  "analytics": {
+    "viewId": "<REPLACE_WITH_VIEW_ID>",
+    "startDate": "2010-01-01",
+    "endDate": "today"
+  }
+}

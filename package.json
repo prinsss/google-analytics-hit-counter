@@ -1,0 +1,27 @@
+{
+  "name": "google-analytics-hit-counter",
+  "version": "0.1.0",
+  "description": "Page views counter that pulls data from Google Analytics API.",
+  "main": "src/app.ts",
+  "scripts": {
+    "start": "ts-node src/app.ts"
+  },
+  "homepage": "https://github.com/printempw/google-analytics-hit-counter",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/printempw/google-analytics-hit-counter.git"
+  },
+  "author": "printempw <printempw@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.3",
+    "@types/node": "^13.9.2"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "googleapis": "^48.0.0",
+    "memory-cache": "^0.2.0",
+    "ts-node": "^8.7.0",
+    "typescript": "^3.8.3"
+  }
+}
