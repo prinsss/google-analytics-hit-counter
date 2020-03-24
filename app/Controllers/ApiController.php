@@ -27,10 +27,10 @@ class ApiController extends Controller
     public function getPageViews(Request $request, AnalyticsReporting $analytics)
     {
         // Parse query string
-        $pages = explode(',', $request->get('pages')) ?: [];
+        $pages = array_filter(explode(',', $request->get('pages', '')));
 
         // Validate queries
-        if (count($pages) == 0) {
+        if (empty($pages)) {
             return response()->json(['error' => 'No pages specified'], 400);
         } else if (count($pages) > env('MAX_QUERY_AMOUNT')) {
             return response()->json(['error' => 'Maximum query amount per request exceeded'], 400);
