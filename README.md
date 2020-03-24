@@ -2,6 +2,8 @@
 
 A page views counter that pulls data from Google Analytics API.
 
+This is a Node.js implementation built with Express framework. For PHP version, checkout to [php](https://github.com/printempw/google-analytics-hit-counter/tree/php) branch.
+
 ## Pre-requisites
 
 To start, you need to first enable [Google Analytics Reporting API](https://developers.google.com/analytics/devguides/reporting/core/v4), and create corresponding credentials.
