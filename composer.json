@@ -1,0 +1,35 @@
+{
+    "name": "printempw/google-analytics-hit-counter",
+    "description": "Page views counter that pulls data from Google Analytics API.",
+    "keywords": ["google", "analytics", "hit-counter", "pageviews"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": "^7.2.5",
+        "google/apiclient": "^2.4",
+        "illuminate/redis": "^7.2",
+        "laravel/lumen-framework": "^7.0",
+        "predis/predis": "^1.1",
+        "symfony/cache": "^5.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/helpers.php"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ]
+    }
+}
