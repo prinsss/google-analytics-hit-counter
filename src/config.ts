@@ -1,6 +1,6 @@
 import { join as pathJoin } from 'path'
 
-type Config = {
+interface Config {
   listenPort: number
   maxQueryAmount: number
   apiCacheTtl: number
