@@ -28,17 +28,20 @@ app.get('/api/pageviews', asyncWrap(async (req, res) => {
     throw error(400, 'Maximum query amount per request exceeded')
   }
 
+  // Prepend leading slash
+  pages = pages.map(uri => uri.startsWith('/') ? uri : `/${uri}`)
+
   let pagesNeedUpdate: string[] = [];
-  let data: {[identifier: string]: number} = {}
+  let data: {[uri: string]: number} = {}
 
   // Pull data from cache first
-  for (const identifier of pages) {
-    if (cache.get(identifier) !== null) {
-      data[identifier] = cache.get(identifier)
-      debug('cache')(`HIT: ${identifier}, value: ${data[identifier]}`)
+  for (const uri of pages) {
+    if (cache.get(uri) !== null) {
+      data[uri] = cache.get(uri)
+      debug('cache')(`HIT: ${uri}, value: ${data[uri]}`)
     } else {
-      pagesNeedUpdate.push(identifier)
-      debug('cache')(`MISS: ${identifier}`)
+      pagesNeedUpdate.push(uri)
+      debug('cache')(`MISS: ${uri}`)
     }
   }
 

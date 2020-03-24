@@ -55,14 +55,14 @@ Make a HTTP GET request to get pageviews (multiple identifiers can be separated 
 
 ```sh
 $ curl -X GET -H 'Content-Type: application/json' \
-  'http://localhost:8000/api/pageviews?pages=foo-bar,test-page'
+  'http://localhost:8000/api/pageviews?pages=/foo-bar,/test/page'
 ```
 
 ```json
 {
   "data": {
-    "foo-bar": 114,
-    "test-page": 514
+    "/foo-bar": 114,
+    "/test/page": 514
   }
 }
 ```

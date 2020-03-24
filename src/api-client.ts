@@ -39,21 +39,21 @@ class ApiClient {
   /**
    * Get pageview count of given pages.
    *
-   * @param {string[]} identifiers
-   * @returns {[identifier: string]: number}
+   * @param {string[]} pages
+   * @returns {[uri: string]: number}
    * @memberof ApiClient
    */
-  async getPageViews(identifiers: string[]) {
+  async getPageViews(pages: string[]) {
     const reporting = google.analyticsreporting({
       version: 'v4',
       auth: this.authClient,
     })
 
-    // Build filter with given identifiers
-    const filters = identifiers.reduce((acc, id) => acc.concat({
+    // Build filter with given URIs
+    const filters = pages.reduce((acc, id) => acc.concat({
       'dimensionName': 'ga:pagePath',
       'operator': 'BEGINS_WITH',
-      'expressions': [`/${id}`],
+      'expressions': [id],
     }), [])
 
     // Build API request body
@@ -75,7 +75,7 @@ class ApiClient {
     const response = await reporting.reports.batchGet({ requestBody })
     debug('api')('response: ' + JSON.stringify(response))
 
-    const pvCount: {[identifier: string]: number} = {}
+    const pvCount: {[uri: string]: number} = {}
 
     // Format API response
     for (const report of response.data.reports) {
@@ -84,12 +84,14 @@ class ApiClient {
 
       for (const row of report.data.rows) {
         try {
-          // Strip query strings from URI and extract page identifier
-          // e.g. "/example-slug/?nsukey=xxx&whatever" => "example-slug"
-          const pageUri = /\/([^\/]+)\//.exec(row.dimensions[0])[1]
+          const pagePath = row.dimensions[0];
 
-          const value = parseInt(row.metrics[0].values[0])
-          pvCount[pageUri] = (pvCount[pageUri] || 0) + value
+          for (const uri of pages) {
+            if (pagePath.startsWith(uri)) {
+              const value = parseInt(row.metrics[0].values[0])
+              pvCount[uri] = (pvCount[uri] || 0) + value
+            }
+          }
         } catch (err) {
           // TODO: handle accessing undefined elements
           console.log(err)
@@ -97,10 +99,10 @@ class ApiClient {
       }
     }
 
-    // Set pageview of nonexistent identifier to 0
-    identifiers.forEach(id => {
-      if (pvCount[id] === undefined) {
-        pvCount[id] = 0
+    // Set pageview of nonexistent URI to 0
+    pages.forEach(uri => {
+      if (pvCount[uri] === undefined) {
+        pvCount[uri] = 0
       }
     })
 
