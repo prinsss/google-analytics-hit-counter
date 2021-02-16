@@ -1,7 +1,9 @@
 import { google } from 'googleapis'
 import { GoogleAuth, OAuth2Client } from 'google-auth-library'
 import { Config } from './config'
-import * as debug from 'debug'
+import Debug from 'debug'
+
+const debug = Debug('api')
 
 class ApiClient {
   protected auth: GoogleAuth
@@ -16,7 +18,7 @@ class ApiClient {
    */
   constructor(config: Config) {
     this.config = config
-    debug('api')('config: ' + JSON.stringify(config))
+    debug('config: ' + JSON.stringify(config))
   }
 
   /**
@@ -71,9 +73,9 @@ class ApiClient {
       }]
     }
 
-    debug('api')('request: ' + JSON.stringify(requestBody))
+    debug('request: ' + JSON.stringify(requestBody))
     const response = await reporting.reports.batchGet({ requestBody })
-    debug('api')('response: ' + JSON.stringify(response))
+    debug('response: ' + JSON.stringify(response))
 
     const pvCount: {[uri: string]: number} = {}
 
@@ -106,7 +108,7 @@ class ApiClient {
       }
     })
 
-    debug('api')('count result: ' + JSON.stringify(pvCount))
+    debug('count result: ' + JSON.stringify(pvCount))
     return pvCount
   }
 }

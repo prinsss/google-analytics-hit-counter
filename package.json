@@ -4,7 +4,9 @@
   "description": "Page views counter that pulls data from Google Analytics API.",
   "main": "src/app.ts",
   "scripts": {
-    "start": "ts-node src/app.ts"
+    "dev": "nodemon --watch 'src/**/*.ts' --exec \"ts-node\" src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js"
   },
   "homepage": "https://github.com/printempw/google-analytics-hit-counter",
   "repository": {
@@ -13,14 +15,18 @@
   },
   "author": "printempw <printempw@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "@types/express": "^4.17.11",
-    "@types/node": "^14.14.28"
-  },
   "dependencies": {
     "express": "^4.17.1",
     "googleapis": "^67.0.0",
-    "memory-cache": "^0.2.0",
+    "memory-cache": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/express": "^4.17.11",
+    "@types/http-errors": "^1.8.0",
+    "@types/memory-cache": "^0.2.1",
+    "@types/node": "^14.14.28",
+    "nodemon": "^2.0.7",
     "ts-node": "^9.1.1",
     "typescript": "^4.1.5"
   }

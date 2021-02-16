@@ -1,13 +1,14 @@
-import * as express from 'express'
-import * as cache from 'memory-cache'
-import * as error from 'http-errors'
-import * as debug from 'debug'
+import express, { Request, Response, NextFunction } from 'express'
+import cache from 'memory-cache'
+import CreateHttpError, { HttpError } from 'http-errors'
+import Debug from 'debug'
 import { parseConfig } from './config'
 import { ApiClient } from './api-client'
 
 const app = express()
 const config = parseConfig()
 const apiClient = new ApiClient(config)
+const debug = Debug('cache')
 
 app.use('/api', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json')
@@ -15,17 +16,18 @@ app.use('/api', (req, res, next) => {
 })
 
 // Catch all promise errors
-const asyncWrap = fn => (...args) => fn(...args).catch(args[2])
+const asyncWrap = (fn: Function) => (...args: any[]) => fn(...args).catch(args[2])
 
-app.get('/api/pageviews', asyncWrap(async (req, res) => {
+app.get('/api/pageviews', asyncWrap(async (req: Request, res: Response) => {
   // Parse query string
-  let pages: string[] = req.query.pages && req.query.pages.split(',') || []
+  const query = req.query.pages as string
+  let pages: string[] = query && query.split(',') || []
 
   // Validate queries
   if (!pages.length) {
-    throw error(400, 'No pages specified')
+    throw CreateHttpError(400, 'No pages specified')
   } else if (pages.length > config.maxQueryAmount) {
-    throw error(400, 'Maximum query amount per request exceeded')
+    throw CreateHttpError(400, 'Maximum query amount per request exceeded')
   }
 
   // Prepend leading slash
@@ -38,10 +40,10 @@ app.get('/api/pageviews', asyncWrap(async (req, res) => {
   for (const uri of pages) {
     if (cache.get(uri) !== null) {
       data[uri] = cache.get(uri)
-      debug('cache')(`HIT: ${uri}, value: ${data[uri]}`)
+      debug(`HIT: ${uri}, value: ${data[uri]}`)
     } else {
       pagesNeedUpdate.push(uri)
-      debug('cache')(`MISS: ${uri}`)
+      debug(`MISS: ${uri}`)
     }
   }
 
@@ -60,7 +62,7 @@ app.get('/api/pageviews', asyncWrap(async (req, res) => {
 }))
 
 // Default error handler
-app.use((err, req, res, next) => {
+app.use((err: HttpError, req: Request, res: Response, next: NextFunction) => {
   const status = err.status || err.statusCode || 500
 
   // Internal server error
