@@ -14,14 +14,14 @@
   "author": "printempw <printempw@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/express": "^4.17.3",
-    "@types/node": "^13.9.2"
+    "@types/express": "^4.17.11",
+    "@types/node": "^14.14.28"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "googleapis": "^48.0.0",
+    "googleapis": "^67.0.0",
     "memory-cache": "^0.2.0",
-    "ts-node": "^8.7.0",
-    "typescript": "^3.8.3"
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.5"
   }
 }
