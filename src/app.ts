@@ -1,6 +1,6 @@
 import * as express from 'express'
 import * as cache from 'memory-cache'
-import * as error from 'http-errors';
+import * as error from 'http-errors'
 import * as debug from 'debug'
 import { parseConfig } from './config'
 import { ApiClient } from './api-client'
@@ -31,7 +31,7 @@ app.get('/api/pageviews', asyncWrap(async (req, res) => {
   // Prepend leading slash
   pages = pages.map(uri => uri.startsWith('/') ? uri : `/${uri}`)
 
-  let pagesNeedUpdate: string[] = [];
+  let pagesNeedUpdate: string[] = []
   let data: {[uri: string]: number} = {}
 
   // Pull data from cache first
@@ -61,7 +61,7 @@ app.get('/api/pageviews', asyncWrap(async (req, res) => {
 
 // Default error handler
 app.use((err, req, res, next) => {
-  const status = err.status || err.statusCode || 500;
+  const status = err.status || err.statusCode || 500
 
   // Internal server error
   if (status >= 500) {

@@ -80,11 +80,11 @@ class ApiClient {
     // Format API response
     for (const report of response.data.reports) {
       if (!report.data.rows)
-        continue;
+        continue
 
       for (const row of report.data.rows) {
         try {
-          const pagePath = row.dimensions[0];
+          const pagePath = row.dimensions[0]
 
           for (const uri of pages) {
             if (pagePath.startsWith(uri)) {
