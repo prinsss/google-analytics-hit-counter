@@ -10,13 +10,7 @@ To start, you need to first enable [Google Analytics Reporting API](https://deve
 
 Follow [this guide](https://developers.google.com/analytics/devguides/reporting/core/v4/quickstart/service-py#1_enable_the_api) to create a service account and get your keys in JSON format. You should find fileds `project_id`, `private_key` and `client_email` in the JSON file downloaded from Developer Console.
 
-## Setup
-
-Install project dependencies:
-
-```sh
-$ npm install
-```
+## Configuration
 
 Copy the config file `config.sample.json` to `config.json` and replace the values inside:
 
@@ -45,18 +39,28 @@ Copy the config file `config.sample.json` to `config.json` and replace the value
 
 To find your Google Analytics View ID, navigate to Admin > View > View Settings.
 
-## Usage
+## Run with Docker
 
-```sh
-$ npm start
+```bash
+docker run --name hit-counter -p 8000:8000 \
+  --mount type=bind,source="$(pwd)"/config.json,target=/app/config.json \
+  -d printempw/google-analytics-hit-counter
 ```
 
-The server will listen on port specified in config file.
+## Build and run
+
+```bash
+npm install
+npm run build
+npm start
+```
+
+## Usage
 
 Make a HTTP GET request to get pageviews (multiple identifiers can be separated by commas):
 
-```sh
-$ curl -X GET -H 'Content-Type: application/json' \
+```bash
+curl -X GET -H 'Content-Type: application/json' \
   'http://localhost:8000/api/pageviews?pages=/foo-bar,/test/page'
 ```
 
