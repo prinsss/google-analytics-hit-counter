@@ -10,8 +10,10 @@ COPY pnpm-lock.yaml ./
 RUN pnpm fetch
 
 COPY --chown=node:node . .
+RUN touch config.json
 
-RUN pnpm install --offline && touch config.json
+# https://github.com/pnpm/pnpm/issues/2992
+RUN pnpm install --shamefully-hoist --offline
 RUN pnpm run build
 
 USER node
@@ -33,8 +35,9 @@ COPY pnpm-lock.yaml ./
 RUN pnpm fetch --prod
 
 COPY --chown=node:node . .
+RUN touch config.json
 
-RUN pnpm install --offline --prod && touch config.json
+RUN pnpm install --shamefully-hoist --offline --prod
 COPY --from=development /usr/src/app/dist ./dist
 
 USER node
