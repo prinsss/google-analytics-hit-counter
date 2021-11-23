@@ -39,22 +39,24 @@ Copy the config file `config.sample.json` to `config.json` and replace the value
 
 To find your Google Analytics View ID, navigate to Admin > View > View Settings.
 
-## Run with Docker
+## Run with Docker (Recommended)
 
 ```bash
 docker run -d --restart=always \
   --name ga-hit-counter \
   -p 8000:8000 \
-  -v ~/somewhere/config.json:/app/config.json \
+  -v "$(pwd)"/config.json:/app/config.json \
   ghcr.io/prinsss/ga-hit-counter:latest
 ```
 
 ## Build and run
 
+Install [pnpm](https://pnpm.io/) if you haven't.
+
 ```bash
-npm install
-npm run build
-npm start
+pnpm install
+pnpm run build
+pnpm start
 ```
 
 ## Usage
