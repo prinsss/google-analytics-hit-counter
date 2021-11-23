@@ -42,9 +42,11 @@ To find your Google Analytics View ID, navigate to Admin > View > View Settings.
 ## Run with Docker
 
 ```bash
-docker run --name hit-counter -p 8000:8000 \
-  --mount type=bind,source="$(pwd)"/config.json,target=/app/config.json \
-  -d printempw/google-analytics-hit-counter
+docker run -d --restart=always \
+  --name ga-hit-counter \
+  -p 8000:8000 \
+  -v ~/somewhere/config.json:/app/config.json \
+  ghcr.io/prinsss/ga-hit-counter:latest
 ```
 
 ## Build and run
