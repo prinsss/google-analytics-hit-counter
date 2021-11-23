@@ -1,13 +1,11 @@
-import { google } from 'googleapis'
-import { GoogleAuth, OAuth2Client } from 'google-auth-library'
+import { google, Auth } from 'googleapis'
 import { Config } from './config'
 import Debug from 'debug'
 
 const debug = Debug('api')
 
 class ApiClient {
-  protected auth: GoogleAuth
-  protected authClient: OAuth2Client
+  protected auth: Auth.GoogleAuth
   protected config: Config
 
   /**
@@ -35,7 +33,8 @@ class ApiClient {
       projectId: this.config.authorization.projectId,
       scopes: 'https://www.googleapis.com/auth/analytics.readonly',
     })
-    this.authClient = await this.auth.getClient()
+    const authClient = await this.auth.getClient()
+    google.options({ auth: authClient })
   }
 
   /**
@@ -46,10 +45,7 @@ class ApiClient {
    * @memberof ApiClient
    */
   async getPageViews(pages: string[]) {
-    const reporting = google.analyticsreporting({
-      version: 'v4',
-      auth: this.authClient,
-    })
+    const reporting = google.analyticsreporting('v4');
 
     // Build filter with given URIs
     const filters = pages.reduce((acc, id) => acc.concat({
@@ -74,7 +70,7 @@ class ApiClient {
     }
 
     debug('request: ' + JSON.stringify(requestBody))
-    const response = await reporting.reports.batchGet({ requestBody })
+    const response = await reporting.reports.batchGet({ requestBody }, {})
     debug('response: ' + JSON.stringify(response))
 
     const pvCount: {[uri: string]: number} = {}
