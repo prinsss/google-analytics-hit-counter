@@ -77,6 +77,12 @@ curl -X GET -H 'Content-Type: application/json' \
 }
 ```
 
+To show detailed logs, run program with `DEBUG` environment variable set as:
+
+```bash
+DEBUG='api,cache'
+```
+
 ## License
 
 MIT
